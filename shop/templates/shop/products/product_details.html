@@ -1,0 +1,144 @@
+{% extends "shop/layouts/main.html" %}
+
+{% block title %}
+Shopkart | Online Shopping
+{% endblock title %}
+
+{% block content %}
+
+<section class="bg-light py-4 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">{{ products }} Products</h4>
+                <hr style="border-color: black;">
+                {% include 'shop/inc/message.html' %}
+            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'collections' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'collections' products.category.name %}">Collections</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Data</li>
+                </ol>
+            </nav>
+
+            <div class="col-4 my-3 pic-box">
+                {% if products.trending %}
+                <div class="hot">Hot</div>
+                {% endif %}
+                {% if products.product_image %}
+                <img src="{{ products.product_image.url }}" alt="" class="img-card-top" height="300px" width="300px">
+                {% endif %}
+            </div>
+            <div class="col-8 my-3">
+                <h3 class="text-success">{{products}}</h3>
+                <p>{{products.vendor}}</p>
+                <p>{{products.description}}</p>
+                <h5 class="my-2 text-danger">Current Price: <s>₹ {{products.original_price}}</s></h5>
+                <h4 class="my-2 text-success">Offer Price: ₹ {{products.selling_price}}</h4>
+                <div class="input-group" style="width: 150px;">
+                    <button class="input-group-text bg-success text-light" type="button" id="btnMinus"><i
+                            class="fa-solid fa-minus"></i></button>
+                    <input type="text" name="qty" id="txtQty" value="1" class="form-control text-center">
+                    <button class="input-group-text bg-success text-light" type="button" id="btnPlus"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="my-3">
+                    <input type="hidden" value="{{products.id}}" id="pid">
+                    {% if products.quantity > 0 %}
+                    <button class="btn btn-primary" id="btnCart"><i class="fa-solid fa-cart-plus"></i>Add to Cart</button>
+                    {% else %}
+                    <button class="btn btn-secondary"><s>out of stock</s></button>
+                    {% endif %}
+                    <button class="btn btn-danger" id="btnFav"><i class="fa-solid fa-heart"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event){
+        const btnPlus = document.getElementById("btnPlus");
+        const btnMinus = document.getElementById("btnMinus");
+        const txtQty = document.getElementById("txtQty");
+        const pid = document.getElementById("pid");
+        const btnCart = document.getElementById("btnCart");
+        const btnFav = document.getElementById("btnFav")
+
+        btnPlus.addEventListener("click", function(){
+            let qty = parseInt(txtQty.value, 10);
+            qty = isNaN(qty) ? 0 : qty;
+            if(qty < 10){
+                qty++;
+                txtQty.value = qty;
+            };
+        });
+
+        btnMinus.addEventListener("click", function(){
+            let qty = parseInt(txtQty.value, 10);
+            qty = isNaN(qty) ? 0 : qty;
+            if(qty > 1){
+                qty--;
+                txtQty.value = qty;
+            };
+        });
+
+        btnCart.addEventListener("click", function(){
+            let qty = parseInt(txtQty.value, 10)
+            qty=isNaN(qty) ? 0: qty;
+            if(qty>0){
+                let postObj = {
+                    "product_qyt":qty,
+                    "pid":pid.value,
+                }
+                
+                fetch("/addtocart",{
+                    method:'POST',
+                    credentials: 'same-origin',
+                    headers:{
+                        'Accept': 'application/json',
+                        'X-Requested-With':'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body:JSON.stringify(postObj)
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    alert(data['status']);
+                });
+            }else{
+                alert('please Enter the Quantity')
+            }
+        })
+
+        btnFav.addEventListener("click", function(){
+            let qty = parseInt(txtQty.value, 10)
+            qty=isNaN(qty) ? 0: qty;
+            if(qty>0){
+                let postObj = {
+                    "product_qyt":qty,
+                    "pid":pid.value,
+                }
+                
+                fetch("/addtofav",{
+                    method:'POST',
+                    credentials: 'same-origin',
+                    headers:{
+                        'Accept': 'application/json',
+                        'X-Requested-With':'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body:JSON.stringify(postObj)
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    alert(data['status']);
+                });
+            }else{
+                alert('please Enter the Quantity')
+            }
+        })
+    })
+</script>
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% extends "shop/layouts/main.html" %}
+
+{% block title %}
+    Shopkart | Online Shopping Login            
+{% endblock title %} 
+
+{% block content %}
+    <div class="container" style="margin-top: 80px;">
+        <div class="row">
+            <div class="col-12">
+                <h1>Login page</h1>
+                <hr>
+                {% include 'shop/inc/message.html' %}
+            </div>
+        </div>
+    </div> 
+    <section class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="" class="form-label">
+                                UserName: 
+                                <input type="text" name="username" id="username" class="form-control" placeholder="Enter username">
+                            </label>
+                        </div>
+                        <div class="mb-4">
+                            <label for="" class="form-label">
+                                Password: 
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Enter password">
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

@@ -1,0 +1,64 @@
+{% extends "shop/layouts/main.html" %}
+
+{% block title %}
+Shopkart | Carts
+{% endblock title %}
+
+{% block content %}
+<section class="bg-light py-4 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">Cart Items</h4>
+                <hr style="border-color: black;">
+            </div>
+
+            <div class="col-12">
+                <table class="table table-bordered">
+                    
+                        <tr>
+                            <th>Images</th>
+                            <th>Product Name</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Remove</th>
+                        </tr>
+                    
+                        {% for item in cart %}
+                        <tr>
+                            <td>
+                                <img src="{{item.product.product_image.url}}" height="75px" alt="{{item.product.name}}">
+                            </td>
+                            <td>
+                                {{item.product.name}}
+                            </td>
+                            <td>₹ {{item.product.selling_price | stringformat:'d'}}</td>
+                            <td>{{item.product_qyt}}</td>
+                            <td class="amount">₹ {{item.total_price | stringformat:'d'}}</td>
+                            <td>
+                                <a href="{% url 'remove_cart' item.id %}" onclick="return confirm('Are your sure? to delete')" class="btn btn-danger btn-sm">
+                                    <i class="fa-solid fa-trash"></i> Remove
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="4" class="text-center" style="font-weight: bold;">Total Price: </td>
+                            <td id="net">0</td>
+                        </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    const nodes = document.querySelectorAll('.amount')
+    const arr = Array.from(nodes)
+    const res = arr.reduce((acc, curr) => {
+        const num = Number(curr.textContent.replace(/[^\d.]/g, ''));
+        return acc + num;
+    }, 0);
+    document.getElementById('net').innerHTML = '₹ :' + res;
+</script>
+{% endblock content %}

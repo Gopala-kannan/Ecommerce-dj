@@ -1,0 +1,41 @@
+{% extends "shop/layouts/main.html" %}
+
+{% block title %}
+    Shopkart | Online Shopping         
+{% endblock title %} 
+
+{% block content %}
+
+{% include 'shop/inc/slider.html' %}
+    <div class="container" style="margin-top: 80px;">
+        <div class="row">
+            <div class="col-12">
+                <h1>Trending Offers</h1>
+                <hr>
+                {% include 'shop/inc/message.html' %}
+            </div>
+             {% for item in products %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card my-3">
+                    {% if item.product_image %}
+                        <img src="{{item.product_image.url}}" class="card-img-top" alt="products">
+                    {% endif %}
+                    <a href="{% url 'product_details' item.category.name item.name %}" class="btn">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <p class="card-text">
+                                <span class="float-start old_price">
+                                    <s>₹ {{ item.original_price | stringformat:'d' }}</s>
+                                </span>
+                                <span class="float-end new_price">
+                                    ₹ {{ item.selling_price | stringformat:'d' }} 
+                                </span>
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

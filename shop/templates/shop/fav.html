@@ -1,0 +1,48 @@
+{% extends "shop/layouts/main.html" %}
+
+{% block title %}
+Shopkart | Carts
+{% endblock title %}
+
+{% block content %}
+<section class="bg-light py-4 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">favourite items</h4>
+                <hr style="border-color: black;">
+            </div>
+
+            <table>
+                <tr>
+                    <th>Images</th>
+                    <th>Products Name</th>
+                    <th>Unit</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Remove</th>
+                </tr>
+            </table>
+
+            {% for item in fav %}
+
+            <tr>
+                <td>
+                    <img src="{{item.product.product_image.url}}" height="75px" alt="{{item.product.name}}">
+                </td>
+                <td>
+                    {{item.product.name}}
+                </td>
+                <td>₹ {{item.product.selling_price | stringformat:'d'}}</td>
+                <td>{{item..product_qyt}}</td>
+                <td><button class="btn btn-danger btn-sm">
+                        <i class="fa-solid fa-trash"></i>Remove
+                    </button></td>
+            </tr>
+
+            {% endfor %}
+        </div>
+    </div>
+
+</section>
+{% endblock content %}
