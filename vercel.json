@@ -1,7 +1,7 @@
 {
   "build": {
     "env": {
-      "DJANGO_SETTINGS_MODULE": "shop.settings"
+      "DJANGO_SETTINGS_MODULE": "shopkart_project.settings"
     }
   },
   "routes": [
