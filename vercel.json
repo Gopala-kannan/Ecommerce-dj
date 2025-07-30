@@ -1,12 +1,16 @@
 {
-    "build":[{
-        "src":"shop/wsgi.py",
-        "config": {"maxlambdaSize":"15mb", "runtime":"Python 3.12.3"}
-    }],
-    "routes":[
-        {
-            "src":"/(.*)",
-            "dest":"shop/wsgi.py"
-        }
-    ]
+  "build": {
+    "src": "shop/wsgi.py",
+    "use": "@vercel/python",
+    "config": {
+      "maxLambdaSize": "15mb",
+      "runtime": "python3.12"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "shop/wsgi.py"
+    }
+  ]
 }
